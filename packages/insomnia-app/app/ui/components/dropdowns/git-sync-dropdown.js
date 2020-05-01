@@ -2,7 +2,7 @@
 import * as React from 'react';
 import autobind from 'autobind-decorator';
 import classnames from 'classnames';
-import { Dropdown, DropdownButton, DropdownDivider, DropdownItem } from '../base/dropdown';
+import { Button, Dropdown, DropdownDivider, DropdownItem } from 'insomnia-components';
 import type { Workspace } from '../../../models/workspace';
 import type { GitLogEntry } from '../../../sync/git/git-vcs';
 import GitVCS from '../../../sync/git/git-vcs';
@@ -27,7 +27,6 @@ type Props = {|
 
   // Optional
   className?: string,
-  renderDropdownButton?: (children: React.Node) => React.Node,
 |};
 
 type State = {|
@@ -77,7 +76,12 @@ class GitSyncDropdown extends React.PureComponent<Props, State> {
     const branch = await vcs.getBranch();
     const branches = await vcs.listBranches();
     const log = (await vcs.log()) || [];
-    this.setState({ ...(otherState || {}), log, branch, branches });
+    this.setState({
+      ...(otherState || {}),
+      log,
+      branch,
+      branches,
+    });
 
     const author = log[0] ? log[0].author : null;
     const cachedGitRepositoryBranch = branch;
@@ -110,7 +114,10 @@ class GitSyncDropdown extends React.PureComponent<Props, State> {
     try {
       await vcs.pull(gitRepository.credentials);
     } catch (err) {
-      showError({ title: 'Pull Error', error: err });
+      showError({
+        title: 'Pull Error',
+        error: err,
+      });
     }
     await db.flushChanges(bufferId);
 
@@ -131,7 +138,10 @@ class GitSyncDropdown extends React.PureComponent<Props, State> {
     try {
       canPush = await vcs.canPush(gitRepository.credentials);
     } catch (err) {
-      showAlert({ title: 'Push Rejected', message: err.message });
+      showAlert({
+        title: 'Push Rejected',
+        message: err.message,
+      });
       this.setState({ loadingPush: false });
       return;
     }
@@ -162,7 +172,10 @@ class GitSyncDropdown extends React.PureComponent<Props, State> {
           },
         });
       } else {
-        showError({ title: 'Push Error', error: err });
+        showError({
+          title: 'Push Error',
+          error: err,
+        });
       }
     }
 
@@ -208,7 +221,10 @@ class GitSyncDropdown extends React.PureComponent<Props, State> {
     try {
       await vcs.checkout(branch);
     } catch (err) {
-      showError({ title: 'Checkout Error', error: err });
+      showError({
+        title: 'Checkout Error',
+        error: err,
+      });
     }
     await db.flushChanges(bufferId, true);
 
@@ -222,29 +238,23 @@ class GitSyncDropdown extends React.PureComponent<Props, State> {
 
   renderButton() {
     const { branch } = this.state;
-    const { vcs, renderDropdownButton } = this.props;
-
-    const renderBtn = renderDropdownButton || (children => (
-      <DropdownButton className="btn btn--compact wide text-left overflow-hidden row-spaced">
-        {children}
-      </DropdownButton>
-    ));
+    const { vcs } = this.props;
 
     if (!vcs.isInitialized()) {
-      return renderBtn(
-        <React.Fragment>
+      return (
+        <Button variant="contained">
           <i className="fa fa-code-fork space-right" />
           Setup Git Sync
-        </React.Fragment>,
+        </Button>
       );
     }
 
     const initializing = false;
-    return renderBtn(
-      <React.Fragment>
+    return (
+      <Button variant="contained">
         <div className="ellipsis">{initializing ? 'Initializing...' : branch}</div>
         <i className="fa fa-code-fork space-left" />
-      </React.Fragment>,
+      </Button>
     );
   }
 
@@ -273,9 +283,7 @@ class GitSyncDropdown extends React.PureComponent<Props, State> {
 
     return (
       <div className={className}>
-        <Dropdown className="wide tall" onOpen={this._handleOpen} ref={this._setDropdownRef}>
-          {this.renderButton()}
-
+        <Dropdown className="wide tall" onOpen={this._handleOpen} ref={this._setDropdownRef} renderButton={this.renderButton}>
           <DropdownDivider>
             Git Sync
             <HelpTooltip>

@@ -82,7 +82,6 @@ import WrapperOnboarding from './wrapper-onboarding';
 import WrapperDebug from './wrapper-debug';
 import { importRaw } from '../../common/import';
 import GitSyncDropdown from './dropdowns/git-sync-dropdown';
-import { DropdownButton } from './base/dropdown';
 import type { ForceToWorkspace } from '../redux/modules/helpers';
 import { getAppName } from '../../common/constants';
 
@@ -520,15 +519,9 @@ class Wrapper extends React.PureComponent<WrapperProps, State> {
         <GitSyncDropdown
           className="margin-left"
           workspace={activeWorkspace}
-          dropdownButtonClassName="btn--clicky-small btn-sync btn-utility"
           gitRepository={activeGitRepository}
           vcs={gitVCS}
           handleInitializeEntities={handleInitializeEntities}
-          renderDropdownButton={children => (
-            <DropdownButton className="btn--clicky-small btn-sync btn-utility">
-              {children}
-            </DropdownButton>
-          )}
         />
       );
     }
