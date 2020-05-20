@@ -1,7 +1,11 @@
 import { assertAsyncError, setupDateMocks } from './util';
 import { MemPlugin } from '../mem-plugin';
+import path from 'path';
+jest.mock('path');
 
-describe('MemPlugin', () => {
+describe.each(['win32', `posix`])('MemPlugin - %o', type => {
+  beforeAll(() => path.__mockPath(type));
+  afterAll(() => jest.resetAllMocks());
   beforeEach(setupDateMocks);
 
   describe('readfile()', () => {
@@ -121,11 +125,19 @@ describe('MemPlugin', () => {
       expect(await p.readdir('/foo')).toEqual(['bar']);
     });
 
-    it('creates directory recursively', async () => {
+    it('creates directory recursively with double slash', async () => {
       const p = new MemPlugin();
 
-      await p.mkdir('/foo/bar/baz', { recursive: true });
-      expect(await p.readdir('/foo/bar/baz')).toEqual([]);
+      await p.mkdir('//foo/bar/baz', { recursive: true });
+      expect(await p.readdir('//foo/bar/baz')).toEqual([]);
+    });
+
+    it('creates directory with double slash', async () => {
+      const p = new MemPlugin();
+      await p.mkdir('//foo', { recursive: true });
+
+      await p.mkdir('//foo/bar');
+      expect(await p.readdir('//foo/bar')).toEqual([]);
     });
 
     it('fails to create if no parent', async () => {
