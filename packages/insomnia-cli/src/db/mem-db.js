@@ -4,8 +4,8 @@ import path from 'path';
 import YAML from 'yaml';
 import type { ApiSpec } from './types';
 
-type Database = {|
-  ApiSpec: Map<string, ApiSpec>,
+export type Database = {|
+  ApiSpec: Map<string, ApiSpec>, // Convert to arrays instead of Map
   Environment: Map<string, Object>,
   Request: Map<string, Object>,
   RequestGroup: Map<string, Object>,
