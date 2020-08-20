@@ -1,4 +1,25 @@
+.editable {
+  width: 100%;
+}
+
 input.editable {
   font-style: italic !important;
+  padding-left: var(--padding-md);
   opacity: 0.9;
+}
+
+span.editable.hover-hint {
+  &::before {
+    transition: opacity 0.15s;
+    transition-timing-function: ease-in;
+    opacity: 0;
+    content: '\f14b';
+    font-family: FontAwesome;
+    margin-right:var(--padding-xs);
+  }
+  &:hover {
+    &::before {
+      opacity: 1;
+    }
+  }
 }

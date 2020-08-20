@@ -360,6 +360,7 @@ class WrapperUnitTest extends React.PureComponent<Props, State> {
               singleClick
               onSubmit={this._handleChangeTestName.bind(this, unitTest)}
               value={unitTest.name}
+              hoverHint
             />
           </h2>
           <div className="form-control form-control--outlined">
@@ -434,6 +435,7 @@ class WrapperUnitTest extends React.PureComponent<Props, State> {
                 singleClick
                 onSubmit={this._handleChangeActiveSuiteName}
                 value={activeUnitTestSuite.name}
+                hoverHint
               />
             </h2>
             <Button variant="outlined" onClick={this._handleCreateTest}>

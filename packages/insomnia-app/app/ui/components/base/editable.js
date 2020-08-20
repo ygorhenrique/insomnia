@@ -37,8 +37,7 @@ class Editable extends PureComponent {
 
   _handleEditEnd() {
     const value = this._input.value.trim();
-
-    if (value !== this.props.value) {
+    if (value !== this.props.value && this._input.value !== '') {
       // Don't run onSubmit for values that haven't been changed.
       this.props.onSubmit(value);
     }
@@ -75,6 +74,7 @@ class Editable extends PureComponent {
       onEditStart, // eslint-disable-line no-unused-vars
       className,
       renderReadView,
+      hoverHint,
       ...extra
     } = this.props;
     const { editing } = this.state;
@@ -97,7 +97,7 @@ class Editable extends PureComponent {
       );
     } else {
       const readViewProps = {
-        className: `editable ${className} ${!initialValue && 'empty'}`,
+        className: `editable ${className} ${!initialValue && 'empty'} ${hoverHint && 'hover-hint'}`,
         title: singleClick ? 'Click to edit' : 'Double click to edit',
         onClick: this._handleSingleClickEditStart,
         onDoubleClick: this._handleEditStart,
@@ -124,6 +124,7 @@ Editable.propTypes = {
   singleClick: PropTypes.bool,
   onEditStart: PropTypes.func,
   className: PropTypes.string,
+  hoverHint: PropTypes.bool,
 };
 
 export default Editable;
