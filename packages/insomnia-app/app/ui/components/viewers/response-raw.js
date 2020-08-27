@@ -1,10 +1,10 @@
-import React, { PureComponent } from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import autobind from 'autobind-decorator';
 import CodeEditor from '../codemirror/code-editor';
 
 @autobind
-class ResponseRaw extends PureComponent {
+class ResponseRaw extends Component {
   _setCodeEditorRef(n) {
     this._codeEditor = n;
   }

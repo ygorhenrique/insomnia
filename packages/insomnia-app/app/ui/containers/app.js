@@ -89,6 +89,8 @@ import FSPlugin from '../../sync/git/fs-plugin';
 import { routableFSPlugin } from '../../sync/git/routable-fs-plugin';
 import AppContext from '../../common/strings';
 import { APP_ID_INSOMNIA } from '../../../config';
+import * as grpc from '@grpc/grpc-js';
+import * as protoLoader from '@grpc/proto-loader';
 
 @autobind
 class App extends PureComponent {
@@ -716,6 +718,37 @@ class App extends PureComponent {
     handleStopLoading(requestId);
   }
 
+  async _handleSendGrpcRequestWithEnvironment(requestId, environmentId) {
+    // const { handleStartLoading, handleStopLoading, settings } = this.props;
+    const PROTO_PATH = '/Users/opendersingh/dev/grpc/examples/protos/helloworld.proto';
+
+    const packageDefinition = await protoLoader.load(PROTO_PATH, {
+      keepCase: true,
+      longs: String,
+      enums: String,
+      defaults: true,
+      oneofs: true,
+    });
+    const protoDescriptor = grpc.loadPackageDefinition(packageDefinition);
+
+    console.log('protoDescriptor', protoDescriptor);
+
+    const client = new protoDescriptor.helloworld.Greeter(
+      'localhost:50051',
+      grpc.credentials.createInsecure(),
+    );
+
+    console.log('client', client);
+
+    client.sayHello({ name: 'you' }, function(err, response) {
+      if (err) {
+        console.error(err);
+      } else {
+        console.log('Greeting:', response.message);
+      }
+    });
+  }
+
   async _handleSendRequestWithEnvironment(requestId, environmentId) {
     const { handleStartLoading, handleStopLoading, settings } = this.props;
     const request = await models.request.getById(requestId);
@@ -731,6 +764,8 @@ class App extends PureComponent {
     }
 
     handleStartLoading(requestId);
+
+    // await this._handleSendGrpcRequestWithEnvironment(requestId, environmentId);
 
     try {
       const responsePatch = await network.send(requestId, environmentId);
