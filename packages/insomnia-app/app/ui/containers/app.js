@@ -731,16 +731,15 @@ class App extends PureComponent {
     });
     const protoDescriptor = grpc.loadPackageDefinition(packageDefinition);
 
-    console.log('protoDescriptor', protoDescriptor);
-
-    const client = new protoDescriptor.helloworld.Greeter(
+    const file = 'helloworld';
+    const service = 'Greeter';
+    const method = 'sayHello';
+    const client = new protoDescriptor[file][service](
       'localhost:50051',
       grpc.credentials.createInsecure(),
     );
 
-    console.log('client', client);
-
-    client.sayHello({ name: 'you' }, function(err, response) {
+    client[method]({ name: 'you' }, function(err, response) {
       if (err) {
         console.error(err);
       } else {
@@ -765,7 +764,7 @@ class App extends PureComponent {
 
     handleStartLoading(requestId);
 
-    // await this._handleSendGrpcRequestWithEnvironment(requestId, environmentId);
+    await this._handleSendGrpcRequestWithEnvironment(requestId, environmentId);
 
     try {
       const responsePatch = await network.send(requestId, environmentId);

@@ -391,9 +391,9 @@ class ResponsePane extends React.PureComponent<Props> {
             </ErrorBoundary>
           </TabPanel>
         </Tabs>
-        <ErrorBoundary errorClassName="font-error pad text-center">
-          <ResponseTimer handleCancel={cancelCurrentRequest} loadStartTime={loadStartTime} />
-        </ErrorBoundary>
+        {/* <ErrorBoundary errorClassName="font-error pad text-center"> */}
+        {/*  <ResponseTimer handleCancel={cancelCurrentRequest} loadStartTime={loadStartTime} /> */}
+        {/* </ErrorBoundary> */}
       </section>
     );
   }
