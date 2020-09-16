@@ -15,6 +15,22 @@ const StyledMethods: React.ComponentType<{}> = styled.span`
   padding-left: var(--padding-lg);
 `;
 
+const HttpMethod = {
+  get: 'GET',
+  put: 'PUT',
+  post: 'POST',
+  delete: 'DELETE',
+  options: 'OPTIONS',
+  head: 'HEAD',
+  patch: 'PATCH',
+  trace: 'TRACE',
+};
+
+function isHttpMethodKey(key: string): boolean {
+  const uppercaseKey = key.toUpperCase();
+  return Object.values(HttpMethod).some(m => m === uppercaseKey);
+}
+
 // Implemented as a class component because of a caveat with render props
 // https://reactjs.org/docs/render-props.html#be-careful-when-using-render-props-with-reactpurecomponent
 export default class SidebarPaths extends React.Component<Props> {
@@ -47,14 +63,16 @@ export default class SidebarPaths extends React.Component<Props> {
             </SidebarItem>
             <SidebarItem>
               <StyledMethods>
-                {Object.keys((method: any)).map(method => (
-                  <span
-                    key={method}
-                    className={`method-${method}`}
-                    onClick={() => onClick('paths', route, method)}>
-                    {method}
-                  </span>
-                ))}
+                {Object.keys((method: any))
+                  .filter(isHttpMethodKey)
+                  .map(method => (
+                    <span
+                      key={method}
+                      className={`method-${method}`}
+                      onClick={() => onClick('paths', route, method)}>
+                      {method}
+                    </span>
+                  ))}
               </StyledMethods>
             </SidebarItem>
           </React.Fragment>
