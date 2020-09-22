@@ -205,6 +205,16 @@ describe('export', () => {
       isPrivate: true,
       parentId: eBase._id,
     });
+    const uts = await models.unitTestSuite.create({
+      name: 'Test suite',
+      parentId: w._id,
+    });
+    const ut = await models.unitTest.create({
+      name: 'Unit Test',
+      code: 'const test = 1;',
+      requestId: r1._id,
+      parentId: uts._id,
+    });
 
     // Test export whole workspace.
     const exportedWorkspacesJson = await importUtil.exportWorkspacesData(null, false, 'json');
@@ -229,9 +239,11 @@ describe('export', () => {
         expect.objectContaining({ _id: f2._id }),
         expect.objectContaining({ _id: r2._id }),
         expect.objectContaining({ _id: ePub._id }),
+        expect.objectContaining({ _id: uts._id }),
+        expect.objectContaining({ _id: ut._id }),
       ]),
     });
-    expect(exportWorkspacesDataJson.resources.length).toBe(8);
+    expect(exportWorkspacesDataJson.resources.length).toBe(10);
 
     // Test export some requests only.
     const exportRequestsJson = await importUtil.exportRequestsData([r1], false, 'json');
@@ -250,11 +262,13 @@ describe('export', () => {
         expect.objectContaining({ _id: jar._id }),
         expect.objectContaining({ _id: r1._id }),
         expect.objectContaining({ _id: ePub._id }),
+        expect.objectContaining({ _id: uts._id }),
+        expect.objectContaining({ _id: ut._id }),
       ]),
     });
 
-    expect(exportRequestsDataJSON.resources.length).toBe(6);
-    expect(exportRequestsDataYAML.resources.length).toBe(6);
+    expect(exportRequestsDataJSON.resources.length).toBe(8);
+    expect(exportRequestsDataYAML.resources.length).toBe(8);
 
     // Ensure JSON and YAML are the same
     expect(exportRequestsDataJSON.resources).toEqual(exportRequestsDataYAML.resources);
@@ -288,6 +302,16 @@ describe('export', () => {
       isPrivate: true,
       parentId: eBase._id,
     });
+    const uts = await models.unitTestSuite.create({
+      name: 'Test suite',
+      parentId: w._id,
+    });
+    const ut = await models.unitTest.create({
+      name: 'Unit Test',
+      code: 'const test = 1;',
+      requestId: r1._id,
+      parentId: uts._id,
+    });
 
     const result = await importUtil.exportWorkspacesData(w, false, 'json');
     expect(JSON.parse(result)).toEqual({
@@ -303,6 +327,8 @@ describe('export', () => {
         expect.objectContaining({ _id: r2._id }),
         expect.objectContaining({ _id: ePub._id }),
         expect.objectContaining({ _id: spec._id }),
+        expect.objectContaining({ _id: uts._id }),
+        expect.objectContaining({ _id: ut._id }),
       ]),
     });
   });

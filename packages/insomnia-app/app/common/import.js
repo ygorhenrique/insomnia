@@ -24,6 +24,8 @@ const EXPORT_TYPE_WORKSPACE = 'workspace';
 const EXPORT_TYPE_COOKIE_JAR = 'cookie_jar';
 const EXPORT_TYPE_ENVIRONMENT = 'environment';
 const EXPORT_TYPE_API_SPEC = 'api_spec';
+const EXPORT_TYPE_UNIT_TEST_SUITE = 'unit_test_suite';
+const EXPORT_TYPE_UNIT_TEST = 'unit_test';
 
 // If we come across an ID of this form, we will replace it with a new one
 const REPLACE_ID_REGEX = /__\w+_\d+__/g;
@@ -35,6 +37,8 @@ const MODELS = {
   [EXPORT_TYPE_COOKIE_JAR]: models.cookieJar,
   [EXPORT_TYPE_ENVIRONMENT]: models.environment,
   [EXPORT_TYPE_API_SPEC]: models.apiSpec,
+  [EXPORT_TYPE_UNIT_TEST_SUITE]: models.unitTestSuite,
+  [EXPORT_TYPE_UNIT_TEST]: models.unitTest,
 };
 
 export type ImportResult = {
@@ -379,7 +383,9 @@ export async function exportRequestsData(
       return (
         d.type === models.cookieJar.type ||
         d.type === models.environment.type ||
-        d.type === models.apiSpec.type
+        d.type === models.apiSpec.type ||
+        d.type === models.unitTestSuite.type ||
+        d.type === models.unitTest.type
       );
     });
     docs.push(...descendants);
@@ -395,7 +401,9 @@ export async function exportRequestsData(
           d.type === models.workspace.type ||
           d.type === models.cookieJar.type ||
           d.type === models.environment.type ||
-          d.type === models.apiSpec.type
+          d.type === models.apiSpec.type ||
+          d.type === models.unitTestSuite.type ||
+          d.type === models.unitTest.type
         )
       ) {
         return false;
@@ -416,6 +424,10 @@ export async function exportRequestsData(
         d._type = EXPORT_TYPE_REQUEST;
       } else if (d.type === models.apiSpec.type) {
         d._type = EXPORT_TYPE_API_SPEC;
+      } else if (d.type === models.unitTestSuite.type) {
+        d._type = EXPORT_TYPE_UNIT_TEST_SUITE;
+      } else if (d.type === models.unitTest.type) {
+        d._type = EXPORT_TYPE_UNIT_TEST;
       }
 
       // Delete the things we don't want to export
