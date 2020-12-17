@@ -1,9 +1,18 @@
-// @flow
-
 import { getMethodAnnotationName, getName, parseUrl } from '../common';
 import urlJoin from 'url-join';
 import { flattenPluginDocuments, getPlugins, prioritizePlugins } from './plugins';
 import { pathVariablesToWildcard, resolveUrlVariables } from './variables';
+import {
+  K8sAnnotations,
+  K8sIngressRule,
+  K8sMetadata,
+  K8sPath,
+  KubernetesConfig,
+  KubernetesMethodConfig,
+} from '../../types/kubernetes-config.flow';
+import { HttpMethodType, OA3Server, OpenApi3Spec } from '../../types/openapi3.flow';
+import { KongForKubernetesResult } from '../../types/outputs.flow';
+import { IndexIncrement } from '../../types/k8plugins.flow';
 
 export function generateKongForKubernetesConfigFromSpec(
   api: OpenApi3Spec,
@@ -15,7 +24,7 @@ export function generateKongForKubernetesConfigFromSpec(
   const plugins = getPlugins(api);
 
   // Initialize document collections
-  const ingressDocuments = [];
+  const ingressDocuments: Array<any> = [];
 
   const methodsThatNeedKongIngressDocuments: Set<HttpMethodType> = new Set<HttpMethodType>();
   let _iterator = 0;
@@ -66,12 +75,12 @@ export function generateKongForKubernetesConfigFromSpec(
 
   const documents = [...methodDocuments, ...pluginDocuments, ...ingressDocuments];
 
-  return ({
+  return {
     type: 'kong-for-kubernetes',
     label: 'Kong for Kubernetes',
     documents,
     warnings: [],
-  }: KongForKubernetesResult);
+  } as KongForKubernetesResult;
 }
 
 function generateK8sMethodDocuments(method: HttpMethodType): KubernetesMethodConfig {
@@ -100,8 +109,8 @@ function generateMetadata(
 }
 
 type CustomAnnotations = {
-  pluginNames: Array<string>,
-  overrideName?: string,
+  pluginNames: Array<string>;
+  overrideName?: string;
 };
 
 export function getSpecName(api: OpenApi3Spec): string {
@@ -131,9 +140,11 @@ export function generateMetadataAnnotations(
     }
 
     const originalAnnotations = metadata?.annotations || {};
+    // @ts-ignore
     return { ...originalAnnotations, ...customAnnotations, ...coreAnnotations };
   }
 
+  // @ts-ignore
   return coreAnnotations;
 }
 
@@ -162,6 +173,7 @@ export function generateRulesForServer(
   if (tlsConfig) {
     return {
       host: hostname,
+      // @ts-ignore
       tls: {
         paths: k8sPaths,
         ...tlsConfig,
@@ -220,7 +232,7 @@ export function generateServicePort(server: OA3Server): number {
 
 export function generateServicePath(
   serverBasePath: string,
-  specificPath: string = '',
+  specificPath = '',
 ): string | typeof undefined {
   const shouldExtractPath = specificPath || (serverBasePath && serverBasePath !== '/');
   if (!shouldExtractPath) {

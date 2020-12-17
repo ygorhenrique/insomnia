@@ -1,4 +1,3 @@
-// @flow
 import { parseSpec } from '../../index';
 import {
   generateKongForKubernetesConfigFromSpec,
@@ -20,6 +19,7 @@ import {
   pluginDummy,
   pluginKeyAuth,
 } from './util/plugin-helpers';
+import { OA3Server, OpenApi3Spec } from '../../../types/openapi3.flow';
 
 describe('index', () => {
   const spec = {

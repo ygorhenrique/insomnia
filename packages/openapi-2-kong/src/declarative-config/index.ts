@@ -1,12 +1,14 @@
-// @flow
 import { generateServices } from './services';
 import { generateUpstreams } from './upstreams';
+import { OpenApi3Spec } from '../../types/openapi3.flow';
+import { DeclarativeConfigResult } from '../../types/outputs.flow';
+import { DeclarativeConfig } from '../../types/declarative-config.flow';
 
 export function generateDeclarativeConfigFromSpec(
   api: OpenApi3Spec,
   tags: Array<string>,
 ): DeclarativeConfigResult {
-  let document = null;
+  let document: DeclarativeConfig | null = null;
   try {
     document = {
       _format_version: '1.1',

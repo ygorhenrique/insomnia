@@ -1,5 +1,3 @@
-// @flow
-
 import {
   fillServerVariables,
   generateSlug,
@@ -10,6 +8,8 @@ import {
 
 import { generateSecurityPlugins } from './security-plugins';
 import { generateOperationPlugins, generateServerPlugins } from './plugins';
+import { OA3Operation, OA3PathItem, OA3Server, OpenApi3Spec } from '../../types/openapi3.flow';
+import { DCRoute, DCService } from '../../types/declarative-config.flow';
 
 export function generateServices(api: OpenApi3Spec, tags: Array<string>): Array<DCService> {
   const servers = getAllServers(api);
@@ -55,7 +55,7 @@ export function generateService(
         continue;
       }
 
-      const operation: ?OA3Operation = pathItem[method];
+      const operation: OA3Operation | null | undefined = pathItem[method];
 
       // This check is here to make Flow happy
       if (!operation) {
@@ -98,8 +98,8 @@ export function generateRouteName(
   const n = numRoutes;
   const name = getName(api);
 
-  if (typeof (pathItem: Object)['x-kong-name'] === 'string') {
-    const pathSlug = generateSlug((pathItem: Object)['x-kong-name']);
+  if (typeof (pathItem as Object)['x-kong-name'] === 'string') {
+    const pathSlug = generateSlug((pathItem as Object)['x-kong-name']);
     return `${name}-${pathSlug}-${method}`;
   }
 

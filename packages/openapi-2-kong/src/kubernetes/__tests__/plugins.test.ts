@@ -1,5 +1,3 @@
-// @flow
-
 import {
   flattenPluginDocuments,
   generateK8PluginConfig,
@@ -21,6 +19,8 @@ import {
   pluginDummy,
   pluginKeyAuth,
 } from './util/plugin-helpers';
+import { OA3PathItem, OA3Paths, OA3Server, OpenApi3Spec } from '../../../types/openapi3.flow';
+import { OperationPlugins, PathPlugins } from '../../../types/k8plugins.flow';
 
 describe('plugins', () => {
   let _iterator = 0;
@@ -108,6 +108,7 @@ describe('plugins', () => {
         paths: {
           '/path': {
             ...pluginKeyAuth,
+            // @ts-ignore
             get: {
               ...pluginKeyAuth,
             },
@@ -212,6 +213,7 @@ describe('plugins', () => {
         components,
       };
 
+      // @ts-ignore
       const result = getGlobalPlugins(api, increment);
 
       expect(result).toEqual([
@@ -292,6 +294,7 @@ describe('plugins', () => {
     it('should handle plugins existing on path', () => {
       const paths: OA3Paths = {
         '/path-no-plugin': {},
+        // @ts-ignore
         '/path': {
           ...pluginDummy,
         },
@@ -313,6 +316,7 @@ describe('plugins', () => {
     it('should handle plugins existing on operation and not on path', () => {
       const paths: OA3Paths = {
         '/path': {
+          // @ts-ignore
           get: {
             ...pluginDummy,
           },
@@ -339,6 +343,7 @@ describe('plugins', () => {
       const paths: OA3Paths = {
         '/path-0': {
           ...pluginKeyAuth,
+          // @ts-ignore
           get: {
             ...pluginDummy,
           },
@@ -442,6 +447,7 @@ describe('plugins', () => {
         },
       };
 
+      // @ts-ignore
       const result = getOperationPlugins(pathItem, increment, api);
 
       expect(result[0].plugins).toEqual([
@@ -484,6 +490,7 @@ describe('plugins', () => {
       const source: PathPlugins = [
         {
           path: '/path-with-plugin',
+          // @ts-ignore
           plugins: [dummyPluginDoc('p0')],
           operations: [blankOperation],
         },
@@ -504,6 +511,7 @@ describe('plugins', () => {
           operations: [
             {
               method: HttpMethod.get,
+              // @ts-ignore
               plugins: [dummyPluginDoc('p0')],
             },
             {
@@ -543,6 +551,7 @@ describe('plugins', () => {
         },
         {
           method: HttpMethod.post,
+          // @ts-ignore
           plugins: [dummyPluginDoc('p0')],
         },
       ];
@@ -579,6 +588,7 @@ describe('plugins', () => {
         paths: {
           '/path': {
             ...pluginKeyAuth,
+            // @ts-ignore
             get: {
               ...pluginKeyAuth,
             },
@@ -620,6 +630,7 @@ describe('plugins', () => {
       const path = [p3];
       const operation = [p4];
 
+      // @ts-ignore
       const result = prioritizePlugins(global, server, path, operation);
       expect(result).toEqual([...operation, ...path, ...server, ...global]);
     });
@@ -636,6 +647,7 @@ describe('plugins', () => {
       const path = [p3];
       const operation = [p4];
 
+      // @ts-ignore
       const result = prioritizePlugins(global, server, path, operation);
       expect(result).toEqual([...operation]);
     });
@@ -651,6 +663,7 @@ describe('plugins', () => {
       const path = [p3];
       const operation = [];
 
+      // @ts-ignore
       const result = prioritizePlugins(global, server, path, operation);
       expect(result).toEqual([...path]);
     });
@@ -665,6 +678,7 @@ describe('plugins', () => {
       const path = [];
       const operation = [];
 
+      // @ts-ignore
       const result = prioritizePlugins(global, server, path, operation);
       expect(result).toEqual([...server]);
     });
@@ -698,6 +712,7 @@ describe('plugins', () => {
       const path = [pp, po];
       const operation = [oo];
 
+      // @ts-ignore
       const result = prioritizePlugins(global, server, path, operation);
       expect(result).toEqual([oo, pp, ss, gg]);
     });

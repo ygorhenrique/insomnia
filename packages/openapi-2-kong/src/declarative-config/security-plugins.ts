@@ -1,18 +1,27 @@
-// @flow
-
 import { getSecurity } from '../common';
+import {
+  OA3Operation,
+  OA3SecurityScheme,
+  OA3SecuritySchemeApiKey,
+  OA3SecuritySchemeHttp,
+  OA3SecuritySchemeOAuth2,
+  OA3SecuritySchemeOpenIdConnect,
+  OpenApi3Spec,
+} from '../../types/openapi3.flow';
+import { DCPlugin } from '../../types/declarative-config.flow';
 
 export function generateSecurityPlugins(
   op: OA3Operation | null,
   api: OpenApi3Spec,
 ): Array<DCPlugin> {
-  const plugins = [];
+  const plugins: Array<DCPlugin> = [];
   const components = api.components || {};
   const securitySchemes = components.securitySchemes || {};
 
   const security = op ? getSecurity(op) : getSecurity(api);
   for (const securityItem of security || []) {
     for (const name of Object.keys(securityItem)) {
+      // @ts-ignore
       const scheme: OA3SecurityScheme = securitySchemes[name] || {};
       const args = securityItem[name];
 
@@ -68,7 +77,7 @@ export function generateOpenIdConnectSecurityPlugin(
 
 export function generateOAuth2SecurityPlugin(
   scheme: OA3SecuritySchemeOAuth2,
-  args: ?Array<any>,
+  args?: Array<any> | null | undefined,
 ): DCPlugin {
   return {
     config: {
@@ -91,19 +100,19 @@ export function generateSecurityPlugin(
 
   // Generate base plugin
   if (type === 'apikey') {
-    plugin = generateApiKeySecurityPlugin((scheme: any));
+    plugin = generateApiKeySecurityPlugin(scheme as any);
   } else if (type === 'http') {
-    plugin = generateHttpSecurityPlugin((scheme: any));
+    plugin = generateHttpSecurityPlugin(scheme as any);
   } else if (type === 'openidconnect') {
-    plugin = generateOpenIdConnectSecurityPlugin((scheme: any), args);
+    plugin = generateOpenIdConnectSecurityPlugin(scheme as any, args);
   } else if (type === 'oauth2') {
-    plugin = generateOAuth2SecurityPlugin((scheme: any));
+    plugin = generateOAuth2SecurityPlugin(scheme as any);
   } else {
     return null;
   }
 
   // Add additional plugin configuration from x-kong-* properties
-  for (const key of Object.keys((scheme: Object))) {
+  for (const key of Object.keys(scheme as Object)) {
     if (key.indexOf('x-kong-security-') !== 0) {
       continue;
     }

@@ -1,6 +1,7 @@
 import fs from 'fs';
 import path from 'path';
 import { generate } from '../index';
+import { DeclarativeConfigResult } from '../../types/outputs.flow';
 
 describe('fixtures', () => {
   const root = path.join(__dirname, '../__fixtures__/');
@@ -16,7 +17,10 @@ describe('fixtures', () => {
     const expected = fs.readFileSync(expectedPath, 'utf8');
 
     it(`converts ${name}`, async () => {
-      const result = await generate(inputPath, 'kong-declarative-config');
+      const result = (await generate(
+        inputPath,
+        'kong-declarative-config',
+      )) as DeclarativeConfigResult;
       expect(result.documents.length).toBe(1);
 
       const document = result.documents[0];

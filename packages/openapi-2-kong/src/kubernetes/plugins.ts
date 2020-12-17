@@ -1,4 +1,4 @@
-// @flow
+import { $Values } from 'utility-types';
 
 import {
   getPaths,
@@ -8,6 +8,16 @@ import {
   isPluginKey,
 } from '../common';
 import { generateSecurityPlugins } from '../declarative-config/security-plugins';
+import { OA3PathItem, OA3Paths, OA3Server, OpenApi3Spec } from '../../types/openapi3.flow';
+import { KubernetesPluginConfig } from '../../types/kubernetes-config.flow';
+import {
+  IndexIncrement,
+  OperationPlugins,
+  PathPlugins,
+  Plugins,
+  ServerPlugins,
+} from '../../types/k8plugins.flow';
+import { DCPlugin } from '../../types/declarative-config.flow';
 
 export function flattenPluginDocuments(plugins: Plugins): Array<KubernetesPluginConfig> {
   const all: Array<KubernetesPluginConfig> = [];

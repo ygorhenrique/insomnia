@@ -1,5 +1,3 @@
-// @flow
-
 export const pluginKeyAuth = {
   'x-kong-plugin-key-auth': {
     name: 'key-auth',
@@ -66,7 +64,7 @@ export const ingressDoc = (
   plugins: Array<string>,
   host: string,
   serviceName: string,
-  path: ?string,
+  path?: string,
 ) => {
   const backend = { serviceName, servicePort: 80 };
   const paths = path ? { path, backend } : { backend };
@@ -99,7 +97,7 @@ export const ingressDocWithOverride = (
   override: string,
   host: string,
   serviceName: string,
-  path: ?string,
+  path: string | null | undefined,
 ) => ({
   apiVersion: 'extensions/v1beta1',
   kind: 'Ingress',

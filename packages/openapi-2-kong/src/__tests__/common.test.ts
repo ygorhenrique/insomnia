@@ -1,4 +1,3 @@
-// @flow
 import {
   fillServerVariables,
   generateSlug,
@@ -14,6 +13,7 @@ import {
   pathVariablesToRegex,
 } from '../common';
 import { parseSpec } from '../index';
+import { OA3Operation, OA3Server, OpenApi3Spec } from '../../types/openapi3.flow';
 
 describe('common', () => {
   const spec: OpenApi3Spec = {
@@ -77,7 +77,6 @@ describe('common', () => {
     it('returns security from operation', () => {
       const operation: OA3Operation = {
         security: [{ petstoreAuth: [] }],
-        responses: {},
       };
 
       const result = getSecurity(operation);
@@ -96,7 +95,6 @@ describe('common', () => {
           '/': {
             post: {
               security: [{ petstoreAuth: [] }],
-              responses: {},
             },
           },
         },
@@ -175,8 +173,9 @@ describe('common', () => {
     });
 
     it('fails with no default value', () => {
-      const server: Object = {
+      const server: OA3Server = {
         url: 'https://{subdomain}.swagger.io/v1',
+        // @ts-ignore
         variables: { subdomain: { enum: ['petstore'] } },
       };
 

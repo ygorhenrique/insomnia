@@ -1,6 +1,5 @@
-// @flow
-
 import { resolveUrlVariables, resolveVariables, pathVariablesToWildcard } from '../variables';
+import { OA3Variables } from '../../../types/openapi3.flow';
 
 describe('variables', () => {
   describe('resolveVariables()', () => {

@@ -1,5 +1,3 @@
-// @flow
-
 import { generateServerPlugins, generatePlugin } from '../plugins';
 
 describe('plugins', () => {

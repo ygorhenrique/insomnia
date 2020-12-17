@@ -1,6 +1,14 @@
-// @flow
 import url from 'url';
 import slugify from 'slugify';
+import {
+  HttpMethodType,
+  OA3Operation,
+  OA3PathItem,
+  OA3Paths,
+  OA3SecurityRequirement,
+  OA3Server,
+  OpenApi3Spec,
+} from '../types/openapi3.flow';
 
 export function getServers(obj: OpenApi3Spec | OA3PathItem): Array<OA3Server> {
   return obj.servers || [];
@@ -29,8 +37,8 @@ export function getSecurity(
 }
 
 type SlugifyOptions = {
-  replacement?: string,
-  lower?: boolean,
+  replacement?: string;
+  lower?: boolean;
 };
 
 export function getName(
@@ -39,7 +47,7 @@ export function getName(
   slugifyOptions?: SlugifyOptions,
   isKubernetes?: boolean,
 ): string {
-  let rawName = '';
+  let rawName;
 
   // Get $.info.x-kubernetes-ingress-metadata.name
   rawName = isKubernetes && api.info?.['x-kubernetes-ingress-metadata']?.name;
@@ -106,14 +114,14 @@ export function getMethodAnnotationName(method: HttpMethodType): string {
 
 export function parseUrl(
   urlStr: string,
-): {|
-  host: string,
-  hostname: string,
-  port: string,
-  protocol: string,
-  pathname: string,
-|} {
-  const parsed: Object = url.parse(urlStr);
+): {
+  host: string;
+  hostname: string;
+  port: string;
+  protocol: string;
+  pathname: string;
+} {
+  const parsed: any = url.parse(urlStr);
 
   if (!parsed.port && parsed.protocol === 'https:') {
     parsed.port = '443';

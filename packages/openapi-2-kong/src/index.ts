@@ -1,9 +1,10 @@
-// @flow
 import fs from 'fs';
 import path from 'path';
 import { generateDeclarativeConfigFromSpec } from './declarative-config';
 import { generateKongForKubernetesConfigFromSpec } from './kubernetes';
 import SwaggerParser from 'swagger-parser';
+import { ConversionResult, ConversionResultType } from '../types/outputs.flow';
+import { OpenApi3Spec } from '../types/openapi3.flow';
 
 export async function generate(
   specPath: string,
@@ -55,6 +56,7 @@ export async function parseSpec(spec: string | Object): Promise<OpenApi3Spec> {
     try {
       api = JSON.parse(spec);
     } catch (err) {
+      // @ts-ignore
       api = SwaggerParser.YAML.parse(spec);
     }
   } else {
@@ -65,6 +67,7 @@ export async function parseSpec(spec: string | Object): Promise<OpenApi3Spec> {
   // a bit less strict
 
   if (!api.info) {
+    // @ts-ignore
     api.info = {};
   }
 
@@ -72,5 +75,6 @@ export async function parseSpec(spec: string | Object): Promise<OpenApi3Spec> {
     api.openapi = '3.0.0';
   }
 
+  // @ts-ignore
   return SwaggerParser.dereference(api);
 }

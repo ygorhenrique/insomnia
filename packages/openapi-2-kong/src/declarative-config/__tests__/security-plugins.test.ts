@@ -9,7 +9,8 @@ describe('security-plugins', () => {
         name: 'x-api-key',
       };
 
-      const result = generateSecurityPlugin(scheme);
+      // @ts-ignore
+      const result = generateSecurityPlugin(scheme, []);
       expect(result).toEqual({
         name: 'key-auth',
         config: {
@@ -24,7 +25,8 @@ describe('security-plugins', () => {
         name: 'x-api-key',
       };
 
-      const result = generateSecurityPlugin(scheme);
+      // @ts-ignore
+      const result = generateSecurityPlugin(scheme, []);
       expect(result).toEqual({
         name: 'key-auth',
         config: {

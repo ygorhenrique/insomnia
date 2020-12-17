@@ -1,6 +1,6 @@
-// @flow
-
 import { getName, parseUrl } from '../common';
+import { OpenApi3Spec } from '../../types/openapi3.flow';
+import { DCUpstream } from '../../types/declarative-config.flow';
 
 export function generateUpstreams(api: OpenApi3Spec, tags: Array<string>) {
   const servers = api.servers || [];

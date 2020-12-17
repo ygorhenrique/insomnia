@@ -1,6 +1,6 @@
-// @flow
-
+import { OA3Operation, OA3Server } from '../../types/openapi3.flow';
 import { getPluginNameFromKey, isPluginKey } from '../common';
+import { DCPlugin } from '../../types/declarative-config.flow';
 
 export function isRequestValidatorPluginKey(key: string): boolean {
   return key.match(/-request-validator$/) != null;
@@ -24,18 +24,20 @@ export function generatePlugins(item: Object, generator: GeneratorFn): Array<DCP
 
 export function generatePlugin(key: string, value: Object): DCPlugin {
   const plugin: DCPlugin = {
-    name: value.name || getPluginNameFromKey(key),
+    name: (value as any).name || getPluginNameFromKey(key),
   };
 
-  if (value.config) {
-    plugin.config = value.config;
+  if ((value as any).config) {
+    plugin.config = (value as any).config;
   }
 
   return plugin;
 }
 
 export function generateRequestValidatorPlugin(obj: Object, operation: OA3Operation): DCPlugin {
-  const config: { [string]: Object } = {
+  const config: {
+    [key: string]: Object;
+  } = {
     version: 'draft4', // Fixed version
   };
 
@@ -43,22 +45,22 @@ export function generateRequestValidatorPlugin(obj: Object, operation: OA3Operat
 
   if (operation.parameters) {
     for (const p of operation.parameters) {
-      if (!(p: Object).schema) {
+      if (!(p as any).schema) {
         throw new Error("Parameter using 'content' type validation is not supported");
       }
-      config.parameter_schema.push({
-        in: (p: Object).in,
-        explode: !!(p: Object).explode,
-        required: !!(p: Object).required,
-        name: (p: Object).name,
-        schema: JSON.stringify((p: Object).schema),
+      (config.parameter_schema as any).push({
+        in: (p as any).in,
+        explode: !!(p as any).explode,
+        required: !!(p as any).required,
+        name: (p as any).name,
+        schema: JSON.stringify((p as any).schema),
         style: 'simple',
       });
     }
   }
 
   if (operation.requestBody) {
-    const content = (operation.requestBody: Object).content;
+    const content = (operation.requestBody as any).content;
     if (!content) {
       throw new Error('content property is missing for request-validator!');
     }

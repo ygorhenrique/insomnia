@@ -1,7 +1,7 @@
 const path = require('path');
 
 module.exports = {
-  entry: { index: './src/index.js' },
+  entry: { index: './src/index.ts' },
   target: 'node',
   mode: 'production',
   devtool: 'source-map',
@@ -20,6 +20,14 @@ module.exports = {
           loader: 'babel-loader',
         },
       },
+      {
+        test: /\.tsx?$/,
+        use: 'ts-loader',
+        exclude: /node_modules/,
+      },
     ],
   },
+  resolve: {
+    extensions: ['.js', '.json', '.tsx', '.ts'],
+  }
 };

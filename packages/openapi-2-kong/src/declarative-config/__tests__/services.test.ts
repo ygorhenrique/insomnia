@@ -1,6 +1,6 @@
-// @flow
 import { generateServices } from '../services';
 import { parseSpec } from '../../index';
+import { OpenApi3Spec } from '../../../types/openapi3.flow';
 
 describe('services', () => {
   describe('generateServices()', () => {

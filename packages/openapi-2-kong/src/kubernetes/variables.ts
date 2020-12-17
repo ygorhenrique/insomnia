@@ -1,4 +1,4 @@
-// @flow
+import { OA3Variables } from '../../types/openapi3.flow';
 
 const protocolSearchValue = /{([^}]+)}(?=:\/\/)/g; // positive lookahead for ://
 const pathSearchValue = /{([^}]+)}(?!:\/\/)/g; // negative lookahead for ://
