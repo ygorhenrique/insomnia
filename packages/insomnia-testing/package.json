@@ -3,7 +3,7 @@
   "version": "2.2.26",
   "main": "dist/index.js",
   "scripts": {
-    "typecheck": "flow check",
+    "typecheck": "",
     "test": "jest",
     "build": "webpack --config webpack.config.js --display errors-only",
     "watch": "npm run build -- --watch",

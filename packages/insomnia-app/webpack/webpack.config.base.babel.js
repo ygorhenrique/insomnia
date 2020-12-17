@@ -24,6 +24,11 @@ module.exports = {
         exclude: [/node_modules/, /__fixtures__/, /__tests__/],
       },
       {
+        test: /\.tsx?$/,
+        use: 'ts-loader',
+        exclude: /node_modules/,
+      },
+      {
         test: /\.(less|css)$/,
         use: [
           'style-loader',
@@ -53,7 +58,7 @@ module.exports = {
       'styled-components': path.resolve(path.join(__dirname, '../node_modules/styled-components')),
       'react-dom': path.resolve(path.join(__dirname, '../node_modules/@hot-loader/react-dom')),
     },
-    extensions: ['.js', '.json'],
+    extensions: ['.js', '.json', '.tsx', '.ts'],
     mainFields: ['webpack', 'browser', 'web', 'browserify', ['jam', 'main'], 'main'],
   },
   node: {

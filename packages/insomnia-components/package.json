@@ -7,7 +7,7 @@
   "repository": "https://github.com/kong/insomnia/tree/develop/packages/insomnia-components",
   "main": "dist/index.js",
   "scripts": {
-    "typecheck": "flow check",
+    "typecheck": "",
     "jest": "jest",
     "jest:watch": "jest --watch",
     "test": "npm run typecheck && npm run jest",

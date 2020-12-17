@@ -4,7 +4,6 @@
     "@babel/plugin-proposal-class-properties"
   ],
   "presets": [
-    "@babel/preset-flow",
     "@babel/preset-react",
     ["@babel/preset-env", {"targets": {"node": true}}]
   ]
