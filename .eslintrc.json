@@ -4,12 +4,6 @@
     "plugin:@typescript-eslint/recommended",
     "prettier/@typescript-eslint", "semistandard", "plugin:prettier/recommended", "plugin:react-hooks/recommended"],
   "plugins": [    "@typescript-eslint","react", "jest", "html", "json", "filenames", "react-hooks"],
-  "parserOptions": {
-    "ecmaVersion": 2018,
-    "sourceType": "module",
-    "project": "./tsconfig.json",
-    "tsconfigRootDir": "."
-  },
   "globals": {
     "__DEV__": true,
     "fail": true,
