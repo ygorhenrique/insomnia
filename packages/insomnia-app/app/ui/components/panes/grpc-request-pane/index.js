@@ -119,7 +119,7 @@ const GrpcRequestPane = ({
                 <button>{methodTypeLabel}</button>
               </Tab>
               <Tab>
-                <button>Headers</button>
+                <button>Headers this </button>
               </Tab>
             </TabList>
             <TabPanel className="react-tabs__tab-panel">

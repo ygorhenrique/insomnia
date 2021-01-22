@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
-import autobind from 'autobind-decorator';
+import { autoBindMethodsForReact } from 'class-autobind-decorator';
 import fs from 'fs';
 import { clipboard, ipcRenderer, remote } from 'electron';
 import { parse as urlParse } from 'url';
@@ -101,7 +101,7 @@ import * as requestOperations from '../../models/helpers/request-operations';
 import { GrpcProvider } from '../context/grpc';
 import { sortMethodMap } from '../../common/sorting';
 
-@autobind
+@autoBindMethodsForReact
 class App extends PureComponent {
   constructor(props) {
     super(props);
