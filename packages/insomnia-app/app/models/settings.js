@@ -58,6 +58,7 @@ type BaseSettings = {
 
   // Feature flags
   enableSyncBeta: boolean,
+  hasPromptedToMigrateFromDesigner: boolean,
 };
 
 export type Settings = BaseModel & BaseSettings;
@@ -114,6 +115,7 @@ export function init(): BaseSettings {
 
     // Feature flags
     enableSyncBeta: false,
+    hasPromptedToMigrateFromDesigner: false,
   };
 }
 

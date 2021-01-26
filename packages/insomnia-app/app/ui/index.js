@@ -18,6 +18,7 @@ import { APP_ID_DESIGNER, APP_ID_INSOMNIA } from '../../config';
 import * as styledComponents from 'styled-components';
 import { initNewOAuthSession } from '../network/o-auth-2/misc';
 import { initializeLogging } from '../common/log';
+import migrateFromDesigner from '../common/migrate-from-designer';
 
 initializeLogging();
 
@@ -68,12 +69,19 @@ document.title = getAppLongName();
     legacySync.disableForSession();
   } else if (appId === APP_ID_INSOMNIA) {
     // Do things that can wait
-    const { enableSyncBeta } = await models.settings.getOrCreate();
+    const {
+      enableSyncBeta,
+      hasPromptedToMigrateFromDesigner,
+    } = await models.settings.getOrCreate();
     if (enableSyncBeta) {
       console.log('[app] Enabling sync beta');
       legacySync.disableForSession();
     } else {
       process.nextTick(legacySync.init);
+    }
+
+    if (!hasPromptedToMigrateFromDesigner) {
+      await migrateFromDesigner();
     }
   }
 })();
